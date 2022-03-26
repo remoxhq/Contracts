@@ -1,0 +1,138 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [{
+			"inputs": [],
+			"stateMutability": "nonpayable",
+			"type": "constructor"
+		}, {
+			"anonymous": false,
+			"inputs": [{
+				"indexed": true,
+				"internalType": "address",
+				"name": "destination",
+				"type": "address"
+			}, {
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}, {
+				"indexed": false,
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}, {
+				"indexed": false,
+				"internalType": "bytes",
+				"name": "returnData",
+				"type": "bytes"
+			}],
+			"name": "TransactionExecution",
+			"type": "event"
+		}, {
+			"inputs": [{
+				"internalType": "address",
+				"name": "destination",
+				"type": "address"
+			}, {
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}, {
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}],
+			"name": "executeTransaction",
+			"outputs": [{
+				"internalType": "bytes",
+				"name": "",
+				"type": "bytes"
+			}],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		}, {
+			"inputs": [{
+				"internalType": "address[]",
+				"name": "destinations",
+				"type": "address[]"
+			}, {
+				"internalType": "uint256[]",
+				"name": "values",
+				"type": "uint256[]"
+			}, {
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}, {
+				"internalType": "uint256[]",
+				"name": "dataLengths",
+				"type": "uint256[]"
+			}],
+			"name": "executeTransactions",
+			"outputs": [{
+				"internalType": "bytes",
+				"name": "",
+				"type": "bytes"
+			}, {
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		}],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/BatchRequest.sol": "Remox Batch Request"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/BatchRequest.sol": {
+			"keccak256": "0xb578ed20d8becb8967163017574f4f65b0a3eb513ae04c301dd2f7762fc37d03",
+			"license": "MIT",
+			"urls": ["bzz-raw://4ad4b5dbbfd47505db5d03801034b475baa2ddc52d014a73d52dbc9348e407c8", "dweb:/ipfs/QmY8pWWyeaA7DXcexMJwT87zRoqrajegNGbkbhJR9xBBjD"]
+		},
+		"contracts/ByteLib.sol": {
+			"keccak256": "0x588eea9d892848f89b7838b76856c190010454fcdd5d2a71fa6d2c532e7c3075",
+			"license": "Unlicense",
+			"urls": ["bzz-raw://36779c0e6b34e298c479dec5ed667b05c7871ba4a807f5fd2f497de3243509fc", "dweb:/ipfs/QmYc6uwtSSchpX5NJaUSm4ZcKtV5DR4SgwUW52mSiptHCU"]
+		},
+		"contracts/ExternalCall.sol": {
+			"keccak256": "0xbe0c0ecc364d68e11d03b1fb0e0864933620dae2871fdc2e8fe584bd645af78a",
+			"license": "MIT",
+			"urls": ["bzz-raw://94aa8cd9ac49f3a6ec57fb7d3f599f3bc3efd838ca28e864a65468c76a33abd0", "dweb:/ipfs/QmZiSCb2Kj9KRaJVydSTEsGr8nnrbMzEGAAmSnUGRByChb"]
+		},
+		"contracts/SafeMath.sol": {
+			"keccak256": "0x237cfbb037f2356c63842c0b1b0fc053ed78a84ad2d4505ce4baf0b34f9cf291",
+			"license": "MIT",
+			"urls": ["bzz-raw://641d0c95793ff32aea48a51c906b0079b2fab0fb4e2f384ebfb19a70a79c2edf", "dweb:/ipfs/QmQnfusyeeQx2hiewqUEQdrATZSyJJF6pdNUYgiHxa7ttq"]
+		}
+	},
+	"version": 1
+}

@@ -1,0 +1,954 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address payable",
+						"name": "_gelato",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_taskTreasury",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "txFee",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "feeToken",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bool",
+						"name": "callSuccess",
+						"type": "bool"
+					}
+				],
+				"name": "ExecSuccess",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "taskId",
+						"type": "bytes32"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "taskCreator",
+						"type": "address"
+					}
+				],
+				"name": "TaskCancelled",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "taskCreator",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "execAddress",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes4",
+						"name": "selector",
+						"type": "bytes4"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "resolverAddress",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "taskId",
+						"type": "bytes32"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes",
+						"name": "resolverData",
+						"type": "bytes"
+					},
+					{
+						"indexed": false,
+						"internalType": "bool",
+						"name": "useTaskTreasuryFunds",
+						"type": "bool"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "feeToken",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "resolverHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "TaskCreated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "taskId",
+						"type": "bytes32"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint128",
+						"name": "nextExec",
+						"type": "uint128"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint128",
+						"name": "interval",
+						"type": "uint128"
+					}
+				],
+				"name": "TimerSet",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_taskId",
+						"type": "bytes32"
+					}
+				],
+				"name": "cancelTask",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_execAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes4",
+						"name": "_execSelector",
+						"type": "bytes4"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_execCommand",
+						"type": "bytes"
+					},
+					{
+						"internalType": "address",
+						"name": "_resolverAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_resolverData",
+						"type": "bytes"
+					}
+				],
+				"name": "createTask",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "task",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_execAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes4",
+						"name": "_execSelector",
+						"type": "bytes4"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_execCommand",
+						"type": "bytes"
+					},
+					{
+						"internalType": "address",
+						"name": "_resolverAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_resolverData",
+						"type": "bytes"
+					},
+					{
+						"internalType": "address",
+						"name": "_feeToken",
+						"type": "address"
+					}
+				],
+				"name": "createTaskNoPrepayment",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "task",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint128",
+						"name": "_startTime",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"name": "_interval",
+						"type": "uint128"
+					},
+					{
+						"internalType": "address",
+						"name": "_execAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes4",
+						"name": "_execSelector",
+						"type": "bytes4"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_execCommand",
+						"type": "bytes"
+					},
+					{
+						"internalType": "address",
+						"name": "_resolverAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_resolverData",
+						"type": "bytes"
+					},
+					{
+						"internalType": "address",
+						"name": "_feeToken",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "_useTreasury",
+						"type": "bool"
+					}
+				],
+				"name": "createTimedTask",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "task",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "task",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_txFee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_feeToken",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "_revertOnFailure",
+						"type": "bool"
+					}
+				],
+				"name": "exec",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"name": "execAddresses",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"name": "execCommands",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "fee",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "feeToken",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "gelato",
+				"outputs": [
+					{
+						"internalType": "address payable",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "taskId",
+						"type": "bytes32"
+					}
+				],
+				"name": "getDetails",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getFeeDetails",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_resolverAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_resolverData",
+						"type": "bytes"
+					}
+				],
+				"name": "getResolverHash",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_func",
+						"type": "string"
+					}
+				],
+				"name": "getSelector",
+				"outputs": [
+					{
+						"internalType": "bytes4",
+						"name": "",
+						"type": "bytes4"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_taskCreator",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_execAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes4",
+						"name": "_selector",
+						"type": "bytes4"
+					},
+					{
+						"internalType": "bool",
+						"name": "_useTaskTreasuryFunds",
+						"type": "bool"
+					},
+					{
+						"internalType": "address",
+						"name": "_feeToken",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "_resolverHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "getTaskId",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_taskCreator",
+						"type": "address"
+					}
+				],
+				"name": "getTaskIdsByUser",
+				"outputs": [
+					{
+						"internalType": "bytes32[]",
+						"name": "",
+						"type": "bytes32[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"name": "taskCreator",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "taskTreasury",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"name": "timedTask",
+				"outputs": [
+					{
+						"internalType": "uint128",
+						"name": "nextExec",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"name": "interval",
+						"type": "uint128"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "taskId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "_execAddress",
+						"type": "address"
+					}
+				],
+				"name": "updateAddress",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "taskId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_execCommand",
+						"type": "bytes"
+					}
+				],
+				"name": "updateCommand",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "taskId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint128",
+						"name": "_startTime",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"name": "_interval",
+						"type": "uint128"
+					}
+				],
+				"name": "updateTime",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "version",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"cancelTask(bytes32)": {
+					"params": {
+						"_taskId": "The hash of the task, can be computed using getTaskId()"
+					}
+				},
+				"createTask(address,bytes4,bytes,address,bytes)": {
+					"details": "Requires funds to be added in Task Treasury, assumes treasury sends fee to Gelato via Ops",
+					"params": {
+						"_execAddress": "On which contract should Gelato execute the transactions",
+						"_execSelector": "Which function Gelato should eecute on the _execAddress",
+						"_resolverAddress": "On which contract should Gelato check when to execute the tx",
+						"_resolverData": "Which data should be used to check on the Resolver when to execute the tx"
+					}
+				},
+				"createTaskNoPrepayment(address,bytes4,bytes,address,bytes,address)": {
+					"details": "Requires no funds to be added in Task Treasury, assumes tasks sends fee to Gelato directly",
+					"params": {
+						"_execAddress": "On which contract should Gelato execute the transactions",
+						"_execSelector": "Which function Gelato should eecute on the _execAddress",
+						"_feeToken": "Which token to use as fee payment",
+						"_resolverAddress": "On which contract should Gelato check when to execute the tx",
+						"_resolverData": "Which data should be used to check on the Resolver when to execute the tx"
+					}
+				},
+				"createTimedTask(uint128,uint128,address,bytes4,bytes,address,bytes,address,bool)": {
+					"params": {
+						"_execAddress": "On which contract should Gelato execute the transactions",
+						"_execSelector": "Which function Gelato should eecute on the _execAddress",
+						"_feeToken": "Which token to use as fee payment",
+						"_interval": "After how many seconds should each task be executed",
+						"_resolverAddress": "On which contract should Gelato check when to execute the tx",
+						"_resolverData": "Which data should be used to check on the Resolver when to execute the tx",
+						"_startTime": "Timestamp when the first task should become executable. 0 for right now",
+						"_useTreasury": "True if Gelato should charge fees from TaskTreasury, false if not"
+					}
+				},
+				"exec(bytes32,uint256,address,bool)": {
+					"params": {
+						"_feeToken": "Token used to pay for the execution. ETH = 0xeeeeee...",
+						"_revertOnFailure": "To revert or not if call to execAddress fails param _execAddress On which contract should Gelato execute the tx param _execData Data used to execute the tx, queried from the Resolver by Gelato",
+						"_txFee": "Fee paid to Gelato for execution, deducted on the TaskTreasury"
+					}
+				},
+				"getResolverHash(address,bytes)": {
+					"params": {
+						"_resolverAddress": "Address of resolver",
+						"_resolverData": "Data passed to resolver"
+					}
+				},
+				"getSelector(string)": {
+					"details": "Example: \"transferFrom(address,address,uint256)\" => 0x23b872dd",
+					"params": {
+						"_func": "String of the function you want the selector from"
+					}
+				},
+				"getTaskId(address,address,bytes4,bool,address,bytes32)": {
+					"params": {
+						"_execAddress": "Address of the contract to be executed by Gelato",
+						"_feeToken": "FeeToken to use, address 0 if task treasury is used",
+						"_resolverHash": "hash of resolver address and data",
+						"_selector": "Function on the _execAddress which should be executed",
+						"_taskCreator": "Address of the task creator",
+						"_useTaskTreasuryFunds": "If msg.sender's balance on TaskTreasury should pay for the tx"
+					}
+				},
+				"getTaskIdsByUser(address)": {
+					"params": {
+						"_taskCreator": "Address who created the task"
+					}
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"cancelTask(bytes32)": {
+					"notice": "Cancel a task so that Gelato can no longer execute it"
+				},
+				"createTask(address,bytes4,bytes,address,bytes)": {
+					"notice": "Create a task that tells Gelato to monitor and execute transactions on specific contracts"
+				},
+				"createTaskNoPrepayment(address,bytes4,bytes,address,bytes,address)": {
+					"notice": "Create a task that tells Gelato to monitor and execute transactions on specific contracts"
+				},
+				"createTimedTask(uint128,uint128,address,bytes4,bytes,address,bytes,address,bool)": {
+					"notice": "Create a timed task that executes every so often based on the inputted interval"
+				},
+				"exec(bytes32,uint256,address,bool)": {
+					"notice": "Execution API called by Gelato"
+				},
+				"getDetails(bytes32)": {
+					"notice": "Helper func to get Execution Address and Execution Command"
+				},
+				"getFeeDetails()": {
+					"notice": "Helper func to query fee and feeToken"
+				},
+				"getResolverHash(address,bytes)": {
+					"notice": "Helper func to query the resolverHash"
+				},
+				"getSelector(string)": {
+					"notice": "Helper func to query the _selector of a function you want to automate"
+				},
+				"getTaskId(address,address,bytes4,bool,address,bytes32)": {
+					"notice": "Returns TaskId of a task Creator"
+				},
+				"getTaskIdsByUser(address)": {
+					"notice": "Helper func to query all open tasks by a task creator"
+				},
+				"updateAddress(bytes32,address)": {
+					"notice": "Func to update Execution Command in Task"
+				},
+				"updateCommand(bytes32,bytes)": {
+					"notice": "Func to update Execution Command in Task"
+				}
+			},
+			"notice": "Ops enables everyone to communicate to Gelato Bots to monitor and execute certain transactionsResolverAddresses determine when Gelato should execute and provides bots with the payload they should use to executeExecAddress determine the actual contracts to execute a function on",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Gelato.sol": "Ops"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts/access/Ownable.sol": {
+			"keccak256": "0x24e0364e503a9bbde94c715d26573a76f14cd2a202d45f96f52134ab806b67b9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e12cbaa7378fd9b62280e4e1d164bedcb4399ce238f5f98fc0eefb7e50577981",
+				"dweb:/ipfs/QmXRoFGUgfsaRkoPT5bxNMtSayKTQ8GZATLPXf69HcRA51"
+			]
+		},
+		"@openzeppelin/contracts/security/ReentrancyGuard.sol": {
+			"keccak256": "0x0e9621f60b2faabe65549f7ed0f24e8853a45c1b7990d47e8160e523683f3935",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://287a2f8d5814dd0f05f22b740f18ca8321acc21c9bd03a6cb2203ea626e2f3f2",
+				"dweb:/ipfs/QmZRQv9iuwU817VuqkA2WweiaibKii69x9QxYBBEfbNEud"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0xbbc8ac883ac3c0078ce5ad3e288fbb3ffcc8a30c3a98c0fda0114d64fc44fca2",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://87a7a5d2f6f63f84598af02b8c50ca2df2631cb8ba2453e8d95fcb17e4be9824",
+				"dweb:/ipfs/QmR76hqtAcRqoFj33tmNjcWTLrgNsAaakYwnKZ8zoJtKei"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": {
+			"keccak256": "0xc3d946432c0ddbb1f846a0d3985be71299df331b91d06732152117f62f0be2b5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://4632c341a06ba5c079b51ca5a915efab4e6ab57735b37839b3e8365ff806a43e",
+				"dweb:/ipfs/QmTHT3xHYed2wajEoA5qu7ii2BxLpPhQZHwAhtLK5Z7ANK"
+			]
+		},
+		"@openzeppelin/contracts/utils/Address.sol": {
+			"keccak256": "0x2ccf9d2313a313d41a791505f2b5abfdc62191b5d4334f7f7a82691c088a1c87",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b3a57d0854b2fdce6ebff933a48dca2445643d1eccfc27f00292e937f26c6a58",
+				"dweb:/ipfs/QmW45rZooS9TqR4YXUbjRbtf2Bpb5ouSarBvfW1LdGprvV"
+			]
+		},
+		"@openzeppelin/contracts/utils/Context.sol": {
+			"keccak256": "0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92",
+				"dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/Math.sol": {
+			"keccak256": "0xc995bddbca1ae19788db9f8b61e63385edd3fddf89693b612d5abd1a275974d2",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ab84f13e6e6e0823854a0cddd49e96df052092d5919f95587607f0ed28a64cb6",
+				"dweb:/ipfs/QmbNtqAq23ZDjCzHukQaa7B3y6rcobscm6FZF5PMQXcnVr"
+			]
+		},
+		"@openzeppelin/contracts/utils/structs/EnumerableSet.sol": {
+			"keccak256": "0x9772845c886f87a3aab315f8d6b68aa599027c20f441b131cd4afaf65b588900",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ad2f29a9c17a4f746416c9e254e17671f43c409dbfa6e4d7d76c3e4a83212d31",
+				"dweb:/ipfs/QmTqU65L6iu6yqmXKzcNLPioR8etzKPWycpDJCm17ifVdS"
+			]
+		},
+		"contracts/FGelato.sol": {
+			"keccak256": "0x1e84d88b467c84a0c01a36d552d06a99bfd9ce7b8382e62712b4f54bedf8e64a",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://ede22d496d09632902b88805160ece34f79daae0f97bfe1ab52c47830b0e2fcb",
+				"dweb:/ipfs/QmSCDGeGm3brmue4DeTbaMtL3LDZN83dAcfukRLxkNHyTr"
+			]
+		},
+		"contracts/Gelato.sol": {
+			"keccak256": "0xbfe4cefb2c1278f95846ca442f580daa03f006645b2df356a9ad8fe65aed1027",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://a0fd8bfea12a386ce3af3a034761a220772bf024b27f5c74950d97f631824a39",
+				"dweb:/ipfs/QmS3wyQ2pxPE1YveZU1FbBJeaML7o8aCthzVYaXjL4Z7NP"
+			]
+		},
+		"contracts/GelatoBytes.sol": {
+			"keccak256": "0x4e80a391dfe6f3db80bd3b51b1f50efb6b08f910b092f05444fb2ed366057cb5",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://98e2d915c19c859367f5f01d430d1b0d2604c5ce7e288c1f046ce3dcfcd8049a",
+				"dweb:/ipfs/QmVxKHEX95kdgmXJhQBhhCyCPjukh9UDcEcBuRr2aNYNBL"
+			]
+		},
+		"contracts/Gelatofied.sol": {
+			"keccak256": "0x4ab56ff9cae9994588130d33584aa0cab83ac15b0470cc5fa002307ca6be78d5",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://e3dd4a671a0efb4cff45218b84d2248b509940dbe589b0848231d5bb26ebadc0",
+				"dweb:/ipfs/QmR1LATZ39qujWdW6rhyBx7ADpngp4dYttBdPaW9PyaAQK"
+			]
+		},
+		"contracts/TaskTreasury.sol": {
+			"keccak256": "0x98b45979192647b5719b9a83fc7b2671bc0a04cd8d60790157bb7055c748d87f",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://600b78608919828acb83f294dd98142daa3cd4087c190a7117c6c0e96a5b24cc",
+				"dweb:/ipfs/QmT4DEeEwG8PJ1bZyDxyLdWGkctPoJiiBuzupFmtedjsjs"
+			]
+		}
+	},
+	"version": 1
+}
